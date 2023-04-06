@@ -1,0 +1,110 @@
+/* Dolce & Vivace
+
+http://dolcevivace.com/
+Copyright 2021 Dolce & Vivace
+*/
+/* JS Dolcet catlist */
+var v_cat_list3_url = $("#cat_list3_url").text();
+var v_shop_url = $("#shop_url").text();
+var process_flg = false;
+if (process_flg == false) {
+
+$.ajax({
+url: v_shop_url + '/load_items/categories/' + v_cat_list3_url + '/3/',
+type: 'GET',
+dataType: 'html',
+beforeSend: function () {
+process_flg = true;
+},
+success: function (data) {
+$('#cat-list-3 .embla__container').prepend(data);
+},
+complete: function () {
+
+process_flg = false;
+
+//cat
+var windowWidth = $(window).width();
+var windowSm = 601;
+if (windowWidth <= windowSm) {
+
+//SP
+const wrap3 = document.querySelector("#cat-list-3");
+const viewPort3 = wrap3.querySelector(".embla__viewport");
+const embla3 = EmblaCarousel(viewPort3, { loop: false, dragFree:true, align: 0, slidesToScroll:3, speed:6, containScroll:'trimSnaps' });
+const setupDotBtns = (dotsArray3, embla) => {
+dotsArray3.forEach((dotNode, i) => {
+dotNode.addEventListener("click", () => embla.scrollTo(i), false);
+});
+};
+const generateDotBtns = (dots, embla) => {
+const template = document.getElementById("embla-dot-template3").innerHTML;
+dots.innerHTML = embla.scrollSnapList().reduce(acc => acc + template, "");
+return [].slice.call(dots.querySelectorAll(".embla__dot3"));
+};
+const selectDotBtn = (dotsArray3, embla) => () => {
+const previous = embla.previousScrollSnap();
+const selected = embla.selectedScrollSnap();
+dotsArray3[previous].classList.remove("is-selected");
+dotsArray3[selected].classList.add("is-selected");
+};
+const dots3 = document.querySelector(".embla-dots3");
+const dotsArray3 = generateDotBtns(dots3, embla3);
+const setSelectedDotBtn3 = selectDotBtn(dotsArray3, embla3);
+setupDotBtns(dotsArray3, embla3);
+embla3.on("select", setSelectedDotBtn3);
+embla3.on("init", setSelectedDotBtn3);
+
+} else {
+
+//PC
+const wrap3 = document.querySelector("#cat-list-3");
+const viewPort3 = wrap3.querySelector(".embla__viewport");
+const embla3 = EmblaCarousel(viewPort3, { loop: false, dragFree:true, align: 0, slidesToScroll:4, speed:6, containScroll:'trimSnaps' });
+const setupDotBtns = (dotsArray3, embla) => {
+dotsArray3.forEach((dotNode, i) => {
+dotNode.addEventListener("click", () => embla.scrollTo(i), false);
+});
+};
+const generateDotBtns = (dots, embla) => {
+const template = document.getElementById("embla-dot-template3").innerHTML;
+dots.innerHTML = embla.scrollSnapList().reduce(acc => acc + template, "");
+return [].slice.call(dots.querySelectorAll(".embla__dot3"));
+};
+const selectDotBtn = (dotsArray3, embla) => () => {
+const previous = embla.previousScrollSnap();
+const selected = embla.selectedScroll
+dotsArray3[previous].classList.remove("is-selected");
+dotsArray3[selected].classList.add("is-selected");
+};
+const setupPrevNextBtns = (prevBtn, nextBtn, embla) => {
+  prevBtn.addEventListener('click', embla.scrollPrev, false);
+  nextBtn.addEventListener('click', embla.scrollNext, false);
+};
+const disablePrevNextBtns = (prevBtn, nextBtn, embla) => {
+  return () => {
+    if (embla.canScrollPrev()) prevBtn.removeAttribute('disabled');
+    else prevBtn.setAttribute('disabled', 'disabled');
+    if (embla.canScrollNext()) nextBtn.removeAttribute('disabled');
+    else nextBtn.setAttribute('disabled', 'disabled');
+  };
+};
+const prevBtn3 = wrap3.querySelector(".embla-prev3");
+const nextBtn3 = wrap3.querySelector(".embla-next3");
+const dots3 = document.querySelector(".embla-dots3");
+const dotsArray3 = generateDotBtns(dots3, embla3);
+const setSelectedDotBtn3 = selectDotBtn(dotsArray3, embla3);
+const disablePrevAndNextBtns3 = disablePrevNextBtns(prevBtn3, nextBtn3, embla3);
+setupPrevNextBtns(prevBtn3, nextBtn3, embla3);
+setupDotBtns(dotsArray3, embla3);
+embla3.on("select", setSelectedDotBtn3);
+embla3.on("select", disablePrevAndNextBtns3);
+embla3.on("init", setSelectedDotBtn3);
+embla3.on("init", disablePrevAndNextBtns3);
+
+}
+//cat end
+
+}
+});
+}
